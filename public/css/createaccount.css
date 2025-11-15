@@ -1,0 +1,174 @@
+* {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e4ebf5 40%, #d7e3f4 60%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Blue diagonal overlay */
+    body::before {
+      content: "";
+      position: absolute;
+      left: -20%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(0,85,165,0.12) 25%, rgba(0,85,165,0.05) 60%);
+      transform: skewX(-15deg);
+    }
+
+    .form-box {
+      position: relative;
+      z-index: 2;
+      background: white;
+      width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-weight: bold;
+      font-size: 14px;
+      position: relative;
+      margin: 20px 0 15px;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #333;
+    }
+
+    .section-title::before {
+      left: 0;
+    }
+
+    .section-title::after {
+      right: 0;
+    }
+
+    .section-title span {
+      background: white;
+      padding: 0 8px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-group {
+      flex: 1;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 20px;
+      border: 1px solid #aaa;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #0b63ce;
+      box-shadow: 0 0 4px rgba(11,99,206,0.3);
+    }
+
+    .role {
+      margin-bottom: 15px;
+    }
+
+    .role-options {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 5px;
+    }
+
+    .role-options label {
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: none;
+      padding: 10px 25px;
+      border-radius: 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-cancel {
+      background-color: #dc3545;
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-cancel:hover {
+      background-color: #b72c39;
+    }
+
+    .btn-signup {
+      background-color: #0b63ce;
+      color: white;
+    }
+
+    .btn-signup:hover {
+      background-color: #084fa1;
+    }
+
+    @media (max-width: 480px) {
+      .form-box {
+        width: 90%;
+        padding: 20px;
+      }
+      .row {
+        flex-direction: column;
+      }
+    }
+
+    

@@ -1,0 +1,121 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f7fb;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Diagonal overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -30%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(0,85,165,0.1) 25%, rgba(0,85,165,0.05) 60%);
+  transform: skewX(-20deg);
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+.verify-box {
+  background: white;
+  width: 450px;
+  padding: 50px;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.icon-box {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+b {
+  color: #0b63ce;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.code-inputs input {
+  width: 45px;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+.code-inputs input:focus {
+  border-bottom-color: #0b63ce;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+  margin-top: 20px; /* 👈 adds nice space above button */
+}
+
+button:hover {
+  background-color: #094dc2;
+}
+
+@media (max-width: 480px) {
+  .verify-box {
+    width: 90%;
+    padding: 30px;
+  }
+
+  .code-inputs input {
+    width: 40px;
+    height: 45px;
+  }
+}
+
