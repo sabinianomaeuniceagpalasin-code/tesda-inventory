@@ -107,17 +107,7 @@ Route::get('/issued/search-students', [IssuedLogController::class, 'searchStuden
 Route::get('/issued/available-serials', [IssuedLogController::class, 'availableSerials']);
 Route::get('/issued/check-ref/{reference}', [IssuedLogController::class, 'checkReference']);
 Route::post('/issued/store', [IssuedLogController::class, 'store'])->name('issued.store');
-
-
 Route::get('/form-records', [IssuedLogController::class, 'indexForms'])->name('form.records');
-
-// --------------------
-// MAINTENANCE ROUTES
-// --------------------
-Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
-Route::get('/maintenance/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
-Route::post('/maintenance/store', [MaintenanceController::class, 'store'])->name('maintenance.store');
-
 
 
 // --------------------
