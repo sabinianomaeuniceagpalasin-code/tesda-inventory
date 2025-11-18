@@ -20,7 +20,7 @@ class IssuedLogController extends Controller
         }
 
         $students = DB::table('student')
-            ->select('id','student_name','student_number','batch')
+            ->select('id', 'student_name', 'student_number', 'batch')
             ->where('student_name', 'LIKE', "%{$q}%")
             ->limit(10)
             ->get();
@@ -32,32 +32,51 @@ class IssuedLogController extends Controller
      * Return available serial numbers for tools
      */
     public function availableSerials(Request $request)
-    {
-        try {
-            $query = DB::table('tools')->where('status', 'Available');
+{
+    try {
+        $formType = $request->get('form_type', 'ICS'); // optional: pass from frontend
 
-            if ($request->has('property_no') && $request->property_no != '') {
-                $query->where('property_no', $request->property_no);
-            }
+        $query = DB::table('tools')
+            ->join('property_inventory', 'tools.property_no', '=', 'property_inventory.property_no')
+            ->where('tools.status', 'Available');
 
-            $tools = $query->get(['serial_no', 'property_no', 'tool_name']);
-
-            return response()->json($tools);
-
-        } catch (\Exception $e) {
-            \Log::error('Available serials error: '.$e->getMessage());
-            return response()->json(['error' => 'Server error'], 500);
+        if ($request->has('property_no') && $request->property_no != '') {
+            $query->where('tools.property_no', $request->property_no);
         }
+
+        $tools = $query->select(
+            'tools.serial_no',
+            'tools.property_no',
+            'tools.tool_name',
+            'property_inventory.unit_cost'
+        )->get();
+
+        // Filter based on form type
+        $filtered = $tools->filter(function($item) use ($formType) {
+            $cost = floatval($item->unit_cost);
+            if ($formType === 'ICS') return $cost >= 15000 && $cost <= 49000;
+            if ($formType === 'PAR') return $cost >= 50000;
+            return false;
+        })->values();
+
+        return response()->json($filtered);
+
+    } catch (\Exception $e) {
+        \Log::error('Available serials error: '.$e->getMessage());
+        return response()->json(['error' => 'Server error'], 500);
     }
+}
 
     /**
      * Quick check if reference number already exists
      */
     public function checkReference($reference)
     {
+        // Check in issued_summary table only
         $exists = DB::table('issued_summary')
             ->where('reference_no', $reference)
             ->exists();
+
         return response()->json(['exists' => $exists]);
     }
 
@@ -65,30 +84,36 @@ class IssuedLogController extends Controller
      * Store the issuance and update tools
      */
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'student_name' => 'required|string',
-            'selected_serials' => 'required|array|min:1',
-            'selected_serials.*' => 'required|string',
-            'form_type' => ['required', Rule::in(['ICS','PAR'])],
-            'issued_date' => 'required|date',
-            'return_date' => 'nullable|date|after_or_equal:issued_date',
-            'reference_no' => 'required|string|unique:issued_summary,reference_no',
-        ]);
+{
+    $data = $request->validate([
+        'student_name' => 'required|string',
+        'selected_serials' => 'required|array|min:1',
+        'selected_serials.*' => 'required|string',
+        'form_type' => ['required', Rule::in(['ICS','PAR'])],
+        'issued_date' => 'required|date',
+        'return_date' => 'nullable|date|after_or_equal:issued_date',
+        'reference_no' => 'required|string|unique:issued_summary,reference_no',
+    ]);
 
-        $issuedDate = Carbon::parse($data['issued_date'])->toDateString();
-        $returnDate = $data['return_date']
-            ? Carbon::parse($data['return_date'])->toDateString()
-            : null;
+    $issuedDate = Carbon::parse($data['issued_date'])->toDateString();
+    $returnDate = $data['return_date'] ? Carbon::parse($data['return_date'])->toDateString() : null;
 
-        $insertedIds = [];
+    DB::beginTransaction();
+    try {
+        $propertyNos = [];
 
-        // Insert each serial into issued_logs
         foreach ($data['selected_serials'] as $serial) {
             $tool = DB::table('tools')->where('serial_no', $serial)->first();
-            $propertyNo = $tool ? $tool->property_no : null;
 
-            $id = DB::table('issued_logs')->insertGetId([
+            if (!$tool) {
+                throw new \Exception("Serial number {$serial} not found.");
+            }
+
+            $propertyNo = $tool->property_no;
+            $propertyNos[] = $propertyNo;
+
+            // Insert into issued_log
+            DB::table('issued_log')->insert([
                 'student_name' => $data['student_name'],
                 'serial_no' => $serial,
                 'property_no' => $propertyNo,
@@ -96,63 +121,93 @@ class IssuedLogController extends Controller
                 'issued_date' => $issuedDate,
                 'return_date' => $returnDate,
                 'reference_no' => $data['reference_no'],
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
 
-            $insertedIds[] = $id;
-
-            // Update tool status
-            if ($tool) {
-                DB::table('tools')->where('serial_no', $serial)->update([
+            // Update tool status and usage_count safely
+            DB::table('tools')->where('serial_no', $serial)
+                ->update([
                     'status' => 'Issued',
+                    'usage_count' => DB::raw('COALESCE(usage_count, 0) + 1'),
                     'updated_at' => now()
                 ]);
-            }
         }
 
-        // Create summary grouped by property_no
-        $summary = collect($data['selected_serials'])->map(function($serial) {
-            return DB::table('tools')->where('serial_no', $serial)->value('property_no');
-        })->filter()->countBy(); // property_no => count
+        // Insert into issued_summary
+        DB::table('issued_summary')->insert([
+            'form_type' => $data['form_type'],
+            'student_name' => $data['student_name'],
+            'item_count' => count($data['selected_serials']),
+            'status' => 'Active',
+            'reference_no' => $data['reference_no'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-        foreach ($summary as $propertyNo => $count) {
-            DB::table('issued_summary')->insert([
-                'property_no' => $propertyNo,
-                'item_count' => $count,
-                'student_name' => $data['student_name'],
-                'form_type' => $data['form_type'],
-                'status' => 'Active',
-                'reference_no' => $data['reference_no'], // add reference number
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        DB::commit();
 
         return response()->json([
             'success' => true,
-            'message' => 'Issued log and summary created successfully',
-            'inserted' => $insertedIds,
-            'data' => [
-                'student_name' => $data['student_name'],
-                'selected_serials' => $data['selected_serials'],
-                'form_type' => $data['form_type'],
-                'issued_date' => $issuedDate,
-                'return_date' => $returnDate,
-                'reference_no' => $data['reference_no'],
-            ]
+            'message' => 'Form saved successfully',
+            'data' => $data,
+            'property_nos' => $propertyNos
         ]);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error('IssuedLog store error: '.$e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Server error: '.$e->getMessage()
+        ], 500);
+    }
+}
+
+public function view($reference_no)
+{
+    // Get the issued summary record
+    $summary = DB::table('issued_summary')
+        ->where('reference_no', $reference_no)
+        ->first();
+
+    if (!$summary) {
+        return response()->json(['error' => 'Record not found'], 404);
     }
 
-    /**
-     * Show all Form Records from issued_summary
-     */
-    public function indexForms()
-    {
-        $issuedForms = DB::table('issued_summary')
-            ->orderBy('created_at', 'desc')
-            ->get();
+    // Get all issued logs for this reference
+    $issuedLogs = DB::table('issued_log')
+        ->where('reference_no', $reference_no)
+        ->get();
 
-        return view('form_records', compact('issuedForms'));
+    $details = [];
+
+    foreach ($issuedLogs as $log) {
+        // Get tool name from tools table
+        $tool = DB::table('tools')
+            ->where('property_no', $log->property_no)
+            ->first();
+
+        // Get unit cost from property_inventory
+        $inventory = DB::table('property_inventory')
+            ->where('property_no', $log->property_no)
+            ->first();
+
+        $details[] = [
+            'property_no' => $log->property_no,
+            'tool_name' => $tool ? $tool->tool_name : 'N/A',
+            'quantity' => 1, // one per serial
+            'unit_cost' => $inventory ? (float)$inventory->unit_cost : 0,
+            'total_cost' => $inventory ? (float)$inventory->unit_cost * 1 : 0,
+            'serial_no' => $log->serial_no
+        ];
     }
+
+    return response()->json([
+        'issued_to' => $summary->student_name,
+        'form_type' => $summary->form_type,
+        'reference_no' => $summary->reference_no,
+        'details' => $details
+    ]);
+}
+
+
 }

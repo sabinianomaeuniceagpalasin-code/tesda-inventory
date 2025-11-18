@@ -5,6 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\IssuedLogController;
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\MaintenanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,13 +45,30 @@ Route::get('/waiting', [AuthController::class, 'waitingPage'])->name('waiting.pa
 Route::middleware('auth')->group(function () {
     // Main dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
 
     // Sub-sections (dynamic content)
     Route::get('/dashboard/inventory', [DashboardController::class, 'inventory'])->name('dashboard.inventory');
     Route::get('/dashboard/reports', [DashboardController::class, 'reports'])->name('dashboard.reports');
     Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
     Route::get('/dashboard/forms', [IssuedLogController::class, 'indexForms'])->name('dashboard.forms');
+
+    // --------------------
+    // ANALYTICS ROUTES
+    // --------------------
+    // Route::get('/dashboard/analytics', [AnalyticsController::class, 'index'])
+    //     ->name('dashboard.analytics');
+
+    // Route::get('/analytics/predict/{toolId}', [AnalyticsController::class, 'predictTool'])
+    //     ->name('analytics.predict');
+
+    // Route::get('/analytics/recommend/{toolId}', [AnalyticsController::class, 'recommendTool'])
+    //     ->name('analytics.recommend');
+
+    // Route::get('/analytics/anomaly/{toolId}', [AnalyticsController::class, 'anomalyCheck'])
+    //     ->name('analytics.anomaly');
+
+    // Route::get('/analytics/report/{toolId}', [AnalyticsController::class, 'fullReport'])
+    //     ->name('analytics.report');
 });
 
 // --------------------
@@ -72,12 +92,13 @@ Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory
 Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
 Route::get('/inventory/get-tool/{tool_name}', [InventoryController::class, 'getTool']);
 Route::get('/check-property-no/{property_no}', [InventoryController::class, 'checkPropertyNo']);
-Route::get('/check-serial-no/{serial_no}', function($serial_no) {
+Route::get('/check-serial-no/{serial_no}', function ($serial_no) {
     $exists = DB::table('tools')->where('serial_no', $serial_no)->exists();
     return response()->json(['exists' => $exists]);
 });
 
-Route::get('/search-students', [StudentController::class, 'search']);
+// NO STUDENT CONTROLLER YET 
+// Route::get('/search-students', [StudentController::class, 'search']);
 
 
 // ... inside Route::middleware('auth')->group(function () { ... });
@@ -90,8 +111,21 @@ Route::post('/issued/store', [IssuedLogController::class, 'store'])->name('issue
 
 Route::get('/form-records', [IssuedLogController::class, 'indexForms'])->name('form.records');
 
+// --------------------
+// MAINTENANCE ROUTES
+// --------------------
+Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+Route::get('/maintenance/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
+Route::post('/maintenance/store', [MaintenanceController::class, 'store'])->name('maintenance.store');
+
+
 
 // --------------------
 // LOGOUT
 // --------------------
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/analytics/predict/{toolId}', [AnalyticsController::class, 'predictTool']);
+Route::get('/analytics/recommend/{toolId}', [AnalyticsController::class, 'recommendTool']);
+Route::get('/analytics/anomaly/{toolId}', [AnalyticsController::class, 'anomalyCheck']);
+Route::get('/analytics/report/{toolId}', [AnalyticsController::class, 'fullReport']);
