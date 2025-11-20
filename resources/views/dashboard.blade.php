@@ -456,6 +456,154 @@
             </div>
           </div>
         </div>
+
+        <!-- ======================
+    MAINTENANCE & MONITORING
+======================= -->
+        <div id="reports" class="content-section">
+          <div class="form-header">
+            <h2>Maintenance Summary</h2>
+
+            <div class="reports-controls">
+              <div class="right-buttons">
+                <input type="text" id="MaintenanceSearchInput" placeholder="Search Item Name...">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-summary">
+            <div class="summary-card">
+              <p>Items Under Repair</p>
+              <h2>{{ $maintenanceCounts['total'] }}</h2>
+            </div>
+            <div class="summary-card">
+              <p>Complete Repairs</p>
+              <h2>{{ $maintenanceCounts['pending'] }}</h2>
+            </div>
+            <div class="summary-card">
+              <p>Unserviceable</p>
+              <h2>{{ $maintenanceCounts['completed'] }}</h2>
+            </div>
+            <div class="summary-card">
+              <p>Total Repair Cost</p>
+              <h2>{{ $maintenanceCounts['upcoming'] }}</h2>
+            </div>
+          </div>
+
+          <!-- Maintenance Filter Input -->
+          <div class="reports-controls">
+
+            <!-- Input With Icon -->
+            <div class="left-side">
+              <div class="input-with-icon">
+                <input type="text" id="MaintenanceFilterInput" placeholder="Filter Items">
+                <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M21 4V6H20L15 13.5V22H9V13.5L4 6H3V4H21ZM6.4037 6L11 12.8944V20H13V12.8944L17.5963 6H6.4037Z">
+                  </path>
+                </svg>
+              </div>
+
+              <!-- Export Button -->
+              <div class="btn-with-icon">
+                <button class="export-btn" id="ExportMaintenanceBtn">
+                  <svg class="export-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M21 3H3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V4C22 3.44772 21.5523 3 21 3ZM12 16C10.3431 16 9 14.6569 9 13H4V5H20V13H15C15 14.6569 13.6569 16 12 16ZM16 11H13V14H11V11H8L12 6.5L16 11Z">
+                    </path>
+                  </svg>
+                  Export to PDF
+                </button>
+              </div>
+
+              <!-- Print Button -->
+              <div class="btn-wth-icon">
+                <button class="print-btn" id="PrintMaintenanceBtn">
+                  <svg class="print-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M7 17H17V22H7V17ZM19 20V15H5V20H3C2.44772 20 2 19.5523 2 19V9C2 8.44772 2.44772 8 3 8H21C21.5523 8 22 8.44772 22 9V19C22 19.5523 21.5523 20 21 20H19ZM5 10V12H8V10H5ZM7 2H17C17.5523 2 18 2.44772 18 3V6H6V3C6 2.44772 6.44772 2 7 2Z">
+                    </path>
+                  </svg>
+                  Print
+              </div>
+            </div>
+
+            <!-- Right Buttons -->
+            <div class="right-side">
+              <div class="btn-with-icon">
+                <button class="edit-btn" id="EditMaintenanceBtn">
+                  <svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="rgba(100,205,138,1)">
+                    <path
+                      d="M12.8995 6.85453L17.1421 11.0972L7.24264 20.9967H3V16.754L12.8995 6.85453ZM14.3137 5.44032L16.435 3.319C16.8256 2.92848 17.4587 2.92848 17.8492 3.319L20.6777 6.14743C21.0682 6.53795 21.0682 7.17112 20.6777 7.56164L18.5563 9.68296L14.3137 5.44032Z">
+                    </path>
+                  </svg>
+                  Edit
+                </button>
+              </div>
+
+              <div class="btn-with-icon">
+                <button class="delete-btn" id="DeleteMaintenanceBtn">
+                  <svg class="delete-icon" mlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="rgba(222,49,49,1)">
+                    <path
+                      d="M17 4H22V6H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V6H2V4H7V2H17V4ZM9 9V17H11V9H9ZM13 9V17H15V9H13Z">
+                    </path>
+                  </svg>
+                  Delete
+                </button>
+              </div>
+
+              <div class="btn-with-icon">
+                <button class="add-btn" id="AddMaintenanceBtn">
+                  <svg class="add-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"
+                    fill="white">
+                    <path d="M12 5v14m-7-7h14" stroke="white" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                  Add New Form
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-table-container">
+            <table class="form-table">
+              <thead>
+                <tr>
+                  <th>Property #</th>
+                  <th>Tool</th>
+                  <th>Issue / Problem</th>
+                  <th>Date Reported</th>
+                  <th>Repair Cost</th>
+                  <th>Expected Completion</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @isset($maintenanceRecords)
+                  @foreach($maintenanceRecords as $record)
+                    <tr>
+                      <td>{{ $record->property_no }}</td>
+                      <td>{{ $record->item_name }}</td>
+                      <td>{{ $record->issue_problem }}</td>
+                      <td>{{ $record->date_reported }}</td>
+                      <td>{{ $record->repair_cost ? '₱' . number_format($record->repair_cost, 2) : '-' }}</td>
+                      <td>{{ $record->expected_completion ?? '-' }}</td>
+                      <td>{{ $record->remarks }}</td>
+                    </tr>
+                  @endforeach
+                @endisset
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ======================
+            FORM RECORDS SECTION
+        ======================= -->
         <div id="form" class="content-section">
           <div class="form-header">
             <h2>Form Summary</h2>
@@ -606,7 +754,6 @@
             </div>
           </div>
 
-          <!-- Small styles to ensure suggestion-box inside modal positions correctly -->
           <style>
             #addFormModal .suggestion-box {
               position: absolute;
@@ -621,561 +768,81 @@
         </div>
   </div>
   </div>
+
+  <!-- ===============================
+     MAINTENANCE ADD MODAL
+================================ -->
+  <div id="maintenanceAddModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Record</h3>
+        <button id="closeMaintenanceModal" class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="maintenanceForm">
+
+          <div class="form-group">
+            <label for="maintenance_property_no">Property Number</label>
+            <input id="maintenance_property_no" name="property_no" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="maintenance_type">Tool</label>
+          </div>
+
+          <div class="form-group">
+            <label for="maintenance_details">Issue / Problem</label>
+            <textarea id="maintenance_details" name="details" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="maintenance_date">Date Reported</label>
+            <input type="date" id="maintenance_date" name="date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="maintenance_date">Repair Cost</label>
+            <input type="date" id="maintenance_date" name="date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="maintenance_date">Expected Completion</label>
+            <input type="date" id="maintenance_date" name="date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="maintenance_date">Remarks/label>
+            <input type="date" id="maintenance_date" name="date" readonly>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            Save Record
+          </button>
+
+        </form>
+      </div>
+
+    </div>
   </div>
-  <!-- ======================
-            MAINTENANCE SECTION
-        ======================= -->
-  <div id="reports" class="content-section">
-    <h2>Maintenance Section</h2>
 
-    <div class="summary-cards">
-      <div class="summary-card">Total: {{ $maintenanceCounts['total'] }}</div>
-      <div class="summary-card">Pending: {{ $maintenanceCounts['pending'] }}</div>
-      <div class="summary-card">Completed: {{ $maintenanceCounts['completed'] }}</div>
-      <div class="summary-card">Upcoming: {{ $maintenanceCounts['upcoming'] }}</div>
-    </div>
+  <script>
 
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Tool</th>
-            <th>Maintenance Type</th>
-            <th>Performed By</th>
-            <th>Date</th>
-            <th>Next Schedule</th>
-            <th>Remarks</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          @isset($maintenanceRecords)
-            @foreach($maintenanceRecords as $record)
-              <tr>
-                <td>{{ $record->tool_name }}</td>
-                <td>{{ $record->maintenance_type }}</td>
-                <td>{{ $record->performed_by }}</td>
-                <td>{{ $record->maintenance_date }}</td>
-                <td>{{ $record->next_schedule ?? '-' }}</td>
-                <td>{{ $record->remarks }}</td>
-                <td>{{ $record->status }}</td>
-              </tr>
-            @endforeach
-          @endisset
-        </tbody>
-      </table>
-    </div>
+    // I DIDN'T SEPERATE THIS FUNCTION INTO A DIFFERENT JS FILE BECAUSE IT'S ONLY USED HERE
+    // Print the content of the View Form Modal
+    function printFormModal() {
+      const modal = document.getElementById('viewFormModal');
+      const modalContent = modal.querySelector('.modal-body').cloneNode(true);
 
-    <script>
-      /* ============================
-         DASHBOARD CHARTS
-      ============================ */
-      // ======== GET DATA FROM CONTROLLER ========
-      const usageLabels = @json($usageData->pluck('tool_name'));
-      const usageValues = @json($usageData->pluck('total_usage'));
-      const issuedLabels = @json($issuedFrequency->pluck('tool_name'));
-      const issuedValues = @json($issuedFrequency->pluck('total')).map(Number);
+      let formType = modal.dataset.formType || '';
+      if (formType === 'ICS') formType = 'Inventory Custodian Slip (ICS)';
+      if (formType === 'PAR') formType = 'Property Acknowledgement Receipt (PAR)';
 
-      // ======== GENERATE UNIQUE TOOL NAMES ========
-      const toolNames = [...new Set([...usageLabels, ...issuedLabels])];
+      const headerUrl = "{{ url('images/header.png') }}";
+      const referenceNoElem = modalContent.querySelector('p strong');
+      const referenceNo = referenceNoElem ? referenceNoElem.parentElement.textContent.trim() : '';
 
-      // ======== ASSIGN COLORS CONSISTENTLY ========
-      const colorMap = {};
-      toolNames.forEach(tool => {
-        const r = Math.floor(Math.random() * 156) + 100;
-        const g = Math.floor(Math.random() * 156) + 100;
-        const b = Math.floor(Math.random() * 156) + 100;
-        colorMap[tool] = `rgb(${r}, ${g}, ${b})`;
-      });
-
-      // ======== USAGE TRENDS BAR CHART ========
-      const usageColors = usageLabels.map(tool => colorMap[tool]);
-
-      new Chart(document.getElementById("usageChart"), {
-        type: "bar",
-        data: {
-          labels: usageLabels,
-          datasets: [{
-            label: "Total Usage Count",
-            data: usageValues,
-            backgroundColor: usageColors,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: {
-              beginAtZero: true,
-              suggestedMin: 0,
-              suggestedMax: 100,
-              ticks: { stepSize: 10 }
-            }
-          }
-        }
-      });
-
-      // ======== ISSUED FREQUENCY PIE CHART ========
-      const issuedColors = issuedLabels.map(tool => colorMap[tool]);
-
-      new Chart(document.getElementById("issuedChart"), {
-        type: "pie",
-        data: {
-          labels: issuedLabels,
-          datasets: [{
-            data: issuedValues,
-            backgroundColor: issuedColors,
-            borderColor: "#fff",
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: "right" },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                  const value = context.parsed;
-                  const percentage = ((value / total) * 100).toFixed(1);
-                  return `${context.label}: ${value} (${percentage}%)`;
-                }
-              }
-            }
-          }
-        }
-      });
-
-
-      /* ============================
-         PAGE SWITCHING
-      ============================ */
-      const menuLinks = document.querySelectorAll(".menu a");
-      const sections = document.querySelectorAll(".content-section");
-      const pageTitle = document.getElementById("page-title");
-
-      menuLinks.forEach(link => {
-        link.addEventListener("click", e => {
-          e.preventDefault();
-          menuLinks.forEach(l => l.classList.remove("active"));
-          link.classList.add("active");
-
-          sections.forEach(sec => sec.classList.remove("active"));
-          document.getElementById(link.dataset.target).classList.add("active");
-
-          pageTitle.textContent = link.textContent.trim();
-        });
-      });
-
-      /* ============================
-         INVENTORY SEARCH
-      ============================ */
-      document.getElementById("inventorySearchInput").addEventListener("keyup", function () {
-        const filter = this.value.toLowerCase();
-
-        document.querySelectorAll("#inventoryTable tbody tr").forEach(row => {
-          const col0 = row.cells[0].textContent.toLowerCase(); // Column 0
-          const col1 = row.cells[1].textContent.toLowerCase(); // Column 1
-
-          const match =
-            col0.includes(filter) ||
-            col1.includes(filter);
-
-          row.style.display = match ? "" : "none";
-        });
-      });
-
-      /* ============================
-         FORM RECORDS SEARCH
-      ============================ */
-      document.getElementById("formSearchInput").addEventListener("keyup", function () {
-        const filter = this.value.toLowerCase();
-
-        document.querySelectorAll(".form-table tbody tr").forEach(row => {
-          const student = row.cells[3].textContent.toLowerCase();  // Issued To
-          const reference = row.cells[1].textContent.toLowerCase(); // Reference No.
-
-          const match =
-            student.includes(filter) ||
-            reference.includes(filter);
-
-          row.style.display = match ? "" : "none";
-        });
-      });
-
-      /* ============================
-         MODALS (Add Item & Forms)
-      ============================ */
-      const modals = {
-        addItem: document.getElementById('addItemModal'),
-        formType: document.getElementById('formTypeModal'),
-        addForm: document.getElementById('addFormModal')
-      };
-
-      document.getElementById('addItemBtn').addEventListener('click', () => modals.addItem.style.display = 'flex');
-      document.getElementById('closeModal').addEventListener('click', () => modals.addItem.style.display = 'none');
-
-      function openFormTypeModal() { modals.formType.style.display = 'flex'; }
-      function closeFormTypeModal() { modals.formType.style.display = 'none'; }
-      function openAddFormModal(type) {
-        document.getElementById('form_type_input').value = type;
-        document.getElementById('addFormTitle').textContent = `${type} - New Form`;
-        closeFormTypeModal();
-        loadAvailableSerials();
-        modals.addForm.style.display = 'flex';
-      }
-      function closeAddFormModal() {
-        modals.addForm.style.display = 'none';
-        document.getElementById('addForm').reset();
-        document.getElementById('studentSuggestion').innerHTML = '';
-        document.getElementById('serialList').innerHTML = '';
-        document.getElementById('refCheck').style.display = 'none';
-      }
-
-      // Add Form buttons
-      document.getElementById('chooseIcs').addEventListener('click', () => openAddFormModal('ICS'));
-      document.getElementById('choosePar').addEventListener('click', () => openAddFormModal('PAR'));
-      document.querySelectorAll('.add-btn').forEach(el => el.addEventListener('click', e => { e.preventDefault(); openFormTypeModal(); }));
-
-      // Close modals if clicked outside
-      window.addEventListener('click', e => {
-        if (e.target.classList.contains('modal-overlay')) e.target.style.display = 'none';
-      });
-
-      /* ============================
-         AUTO CALCULATE TOTAL
-      ============================ */
-      const qtyInput = document.getElementById('quantity');
-      const unitInput = document.getElementById('unit_cost');
-      const totalInput = document.getElementById('total_cost');
-
-      function updateTotal() {
-        totalInput.value = ((parseFloat(qtyInput.value) || 0) * (parseFloat(unitInput.value) || 0)).toFixed(2);
-      }
-      qtyInput.addEventListener('input', updateTotal);
-      unitInput.addEventListener('input', updateTotal);
-
-      /* ============================
-         AUTO-FILL PROPERTY NUMBER
-      ============================ */
-      document.getElementById('property_no').addEventListener('blur', async function () {
-        const propertyNo = this.value.trim();
-        if (!propertyNo) return;
-
-        try {
-          const res = await fetch(`/check-property-no/${encodeURIComponent(propertyNo)}`);
-          const data = await res.json();
-
-          if (data.exists) {
-            document.getElementById('tool_name').value = data.data.tool_name;
-            document.getElementById('classification').value = data.data.classification;
-            document.getElementById('source_of_fund').value = data.data.source_of_fund;
-            document.getElementById('date_acquired').value = data.data.date_acquired;
-          } else {
-            document.getElementById('tool_name').value = '';
-            document.getElementById('classification').value = '';
-            document.getElementById('source_of_fund').value = '';
-            document.getElementById('date_acquired').value = '';
-          }
-        } catch (err) { console.error(err); }
-      });
-
-      /* ============================
-         SERIAL NUMBER CHECK
-      ============================ */
-      const serialInput = document.getElementById('serial_no');
-      if (serialInput) {
-        serialInput.addEventListener('blur', async function () {
-          const serialNo = this.value.trim();
-          if (!serialNo) return;
-          try {
-            const res = await fetch(`/check-serial-no/${encodeURIComponent(serialNo)}`);
-            const data = await res.json();
-            if (data.exists) { alert('Serial already exists'); this.value = ''; this.focus(); }
-          } catch (err) { console.error(err); }
-        });
-      }
-
-      /* ============================
-         REFERENCE QUICK CHECK
-      ============================ */
-      const referenceNo = document.getElementById('referenceNo');
-      const refCheck = document.getElementById('refCheck');
-      let refTimer = null;
-      referenceNo.addEventListener('input', function () {
-        if (refTimer) clearTimeout(refTimer);
-        const ref = this.value.trim();
-        refCheck.style.display = 'none';
-        if (!ref) return;
-
-        refTimer = setTimeout(async () => {
-          try {
-            const res = await fetch(`/issued/check-ref/${encodeURIComponent(ref)}`);
-            const data = await res.json();
-            refCheck.style.display = data.exists ? 'block' : 'none';
-          } catch (err) { console.error(err); }
-        }, 300);
-      });
-
-      /* ============================
-         STUDENT SEARCH LIVE
-      ============================ */
-      const studentSearch = document.getElementById('studentSearch');
-      const studentSuggestion = document.getElementById('studentSuggestion');
-      let studentTimer = null;
-
-      studentSearch.addEventListener('keyup', function () {
-        const q = this.value.trim();
-        studentSuggestion.innerHTML = '';
-        if (studentTimer) clearTimeout(studentTimer);
-        if (q.length < 1) return;
-
-        studentTimer = setTimeout(async () => {
-          try {
-            const res = await fetch(`/issued/search-students?query=${encodeURIComponent(q)}`);
-            const data = await res.json();
-            if (!data || data.length === 0) studentSuggestion.innerHTML = `<div class="no-result">No students found</div>`;
-            else {
-              studentSuggestion.innerHTML = data.map(s => `<div class="suggest-item" onclick="selectStudent('${s.student_name}')">${s.student_name}</div>`).join('');
-            }
-          } catch (err) { studentSuggestion.innerHTML = `<div class="no-result">Error loading</div>`; console.error(err); }
-        }, 250);
-      });
-
-      function selectStudent(name) {
-        studentSearch.value = name;
-        studentSuggestion.innerHTML = '';
-      }
-
-      /* ============================
-         LOAD AVAILABLE SERIALS
-      ============================ */
-      async function loadAvailableSerials(propertyNo = '') {
-        const container = document.getElementById('serialList');
-        const formType = document.getElementById('form_type_input').value; // ICS or PAR
-        container.innerHTML = '<div class="placeholder">Loading available serials...</div>';
-
-        if (!propertyNo) {
-          container.innerHTML = '<div class="placeholder">Type a Property No. to see available items.</div>';
-          return;
-        }
-
-        try {
-          const res = await fetch(`/issued/available-serials?property_no=${encodeURIComponent(propertyNo)}&form_type=${encodeURIComponent(formType)}`);
-          const list = await res.json();
-
-          if (!list.length) {
-            container.innerHTML = '<div class="placeholder">No available items for this property number.</div>';
-            return;
-          }
-
-          container.innerHTML = list.map(item => `
-            <div class="serial-item" onclick="this.querySelector('input').click()">
-                <input type="checkbox" class="serial-checkbox" data-serial="${item.serial_no}" data-property="${item.property_no}">
-                <span>${item.tool_name} ${item.serial_no} (₱${Number(item.unit_cost).toLocaleString()})</span>
-            </div>
-        `).join('');
-
-        } catch (err) {
-          console.error(err);
-          container.innerHTML = `<div class="placeholder" style="color:red;">Failed to load serials: ${err.message}</div>`;
-        }
-      }
-
-
-
-      /* ============================
-         SUBMIT FORM (AJAX)
-      ============================ */
-      async function submitForm(e) {
-        e.preventDefault();
-
-        const studentName = document.getElementById('studentSearch').value.trim();
-        const referenceNo = document.getElementById('referenceNo').value.trim();
-        const issuedDate = document.getElementById('issuedDate').value;
-        const returnDate = document.getElementById('returnDate').value;
-        const formType = document.getElementById('form_type_input').value;
-
-        const checkedSerials = Array.from(document.querySelectorAll('.serial-checkbox:checked'))
-          .map(cb => cb.dataset.serial);
-
-        if (!studentName || !referenceNo || !issuedDate || !checkedSerials.length) {
-          return alert('Please fill all required fields and select at least one serial.');
-        }
-
-        const refCheck = document.getElementById('refCheck');
-        if (refCheck.style.display !== 'none') return alert('Reference number already exists.');
-
-        const payload = {
-          student_name: studentName,
-          selected_serials: checkedSerials,
-          form_type: formType,
-          issued_date: issuedDate,
-          return_date: returnDate,
-          reference_no: referenceNo
-        };
-
-        try {
-          const res = await fetch('/issued/store', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(payload)
-          });
-
-          const json = await res.json();
-
-          if (!json.success) {
-            return alert(json.message || 'Failed to save form');
-          }
-
-          alert('Form saved successfully!');
-          closeAddFormModal();
-          window.location.reload();
-
-        } catch (err) {
-          console.error(err);
-          alert('Unexpected error saving form: ' + err.message);
-        }
-      }
-
-      /* ============================
-         PROPERTY FILTER SERIALS
-      ============================ */
-      document.getElementById('propertyFilter').addEventListener('input', function () {
-        loadAvailableSerials(this.value.trim());
-      });
-
-      // Open View Modal
-      function closeViewFormModal() {
-        document.getElementById('viewFormModal').style.display = 'none';
-        document.getElementById('viewFormModal').querySelector('.modal-body').innerHTML = '';
-      }
-
-      // Attach click event to all "View" links in the form table
-      document.querySelectorAll('.form-table tbody tr td a').forEach(link => {
-        if (link.textContent.trim() === 'View') {
-          link.addEventListener('click', async function (e) {
-            e.preventDefault();
-            const row = this.closest('tr');
-            const referenceNo = row.cells[1].textContent.trim();
-            const formType = row.cells[0].textContent.trim(); // <-- GET FORM TYPE HERE
-
-            try {
-              const res = await fetch(`/issued/view/${encodeURIComponent(referenceNo)}`);
-              if (!res.ok) throw new Error(`HTTP ${res.status}`);
-              const data = await res.json();
-              if (data.error) return alert(data.error);
-
-              // Group items by property number
-              const grouped = {};
-              data.details.forEach(d => {
-                if (!grouped[d.property_no]) {
-                  grouped[d.property_no] = {
-                    property_no: d.property_no,
-                    tool_name: d.tool_name,
-                    quantity: 0,
-                    unit_cost: 0,
-                    total_cost: 0,
-                    serials: []
-                  };
-                }
-                grouped[d.property_no].quantity += 1;
-                grouped[d.property_no].unit_cost = Number(d.unit_cost) || 0;
-                grouped[d.property_no].total_cost += Number(d.unit_cost) || 0;
-                grouped[d.property_no].serials.push(d.serial_no);
-              });
-
-              // Build modal content WITHOUT signature block
-              let html = `
-                    <br>
-                    <p><strong>Issued To:</strong> <u>${data.issued_to}</u></p>
-                    <p><strong>Reference No.:</strong> <u>${data.reference_no}</u></p>
-                    <table border="1" cellpadding="5" style="width:100%; margin-top:10px;">
-                        <thead>
-                            <tr>
-                                <th>Property Number</th>
-                                <th>Article/Property Name</th>
-                                <th>Quantity</th>
-                                <th>Unit Cost</th>
-                                <th>Total Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
-              Object.values(grouped).forEach(item => {
-                html += `<tr>
-                        <td>${item.property_no}</td>
-                        <td>${item.tool_name}</td>
-                        <td>${item.quantity}</td>
-                        <td>${item.unit_cost.toFixed(2)}</td>
-                        <td>${item.total_cost.toFixed(2)}</td>
-                    </tr>`;
-              });
-              html += `</tbody></table>`;
-
-              html += `
-                    <h4 style="margin-top:15px;">Serial Numbers Issued</h4>
-                    <table border="1" cellpadding="5" style="width:100%; margin-top:5px;">
-                        <thead>
-                            <tr>
-                                <th>Property Number</th>
-                                <th>Serial Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
-              data.details.forEach(d => {
-                html += `<tr>
-                        <td>${d.property_no}</td>
-                        <td>${d.serial_no}</td>
-                    </tr>`;
-              });
-              html += `</tbody></table>`;
-
-              // Add acknowledgement text
-              html += `
-                    <div style="margin-top:30px; font-size:14px; line-height:1.5;">
-                        I hereby acknowledge receipt of the above-listed item(s) and accept full responsibility for their proper use, custody, and maintenance.
-                        I understand that any loss, damage, or misuse of said property will be my liability and may be subject to appropriate administrative or financial action as per government property regulations.
-                    </div>
-                `;
-
-              document.getElementById('viewFormModal').dataset.formType = formType;
-
-              document.getElementById('viewFormModal').querySelector('.modal-body').innerHTML = html;
-              document.getElementById('viewFormModal').style.display = 'flex';
-
-            } catch (err) {
-              console.error(err);
-              alert('Failed to load form details: ' + err.message);
-            }
-          });
-        }
-      });
-
-      // Print function with proper header and only 2 signatures
-      // Print function with proper header and friendly form type names
-      function printFormModal() {
-        const modal = document.getElementById('viewFormModal');
-        const modalContent = modal.querySelector('.modal-body').cloneNode(true);
-
-        // Get the form type from the data attribute
-        let formType = modal.dataset.formType || '';
-        if (formType === 'ICS') formType = 'Inventory Custodian Slip (ICS)';
-        if (formType === 'PAR') formType = 'Property Acknowledgement Receipt (PAR)';
-
-        const headerUrl = "{{ url('images/header.png') }}";
-        const referenceNoElem = modalContent.querySelector('p strong');
-        const referenceNo = referenceNoElem ? referenceNoElem.parentElement.textContent.trim() : '';
-
-        const printHTML = `
+      const printHTML = `
         <html>
         <head>
             <style>
@@ -1220,20 +887,37 @@
         </html>
     `;
 
-        const printWindow = window.open('TESDA', 'TESDA', 'width=900,height=700');
-        printWindow.document.write(printHTML);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
-      }
+      const printWindow = window.open('TESDA', 'TESDA', 'width=900, height = 700');
+      printWindow.document.write(printHTML);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    }
+  </script>
 
+  <script>
+    window.usageLabels = @json($usageData->pluck('tool_name'));
+    window.usageValues = @json($usageData->pluck('total_usage'));
+    window.issuedLabels = @json($issuedFrequency->pluck('tool_name'));
+    window.issuedValues = @json($issuedFrequency->pluck('total')).map(Number);
+  </script>
 
-      // Close modal if clicked outside
-      window.addEventListener('click', e => {
-        if (e.target.id === 'viewFormModal') closeViewFormModal();
-      });
-    </script>
+  <script src="{{ asset('js/dashboard-charts.js') }}"></script>
+  <script src=" {{ asset('js/dashboard-page-switch.js') }}"></script>
+  <script src="{{ asset('js/dashboard-inv-search.js') }}"></script>
+  <script src="{{ asset('js/dashboard-modal.js') }}"></script>
+  <script src="{{ asset('js/dashboard-form-search.js') }}"></script>
+  <script src="{{ asset('js/dashboard-calc-total.js') }}"></script>
+  <script src="{{ asset('js/dashboard-fill-prop-num.js') }}"></script>
+  <script src="{{ asset('js/dashboard-form-search.js') }}"></script>
+  <script src="{{ asset('js/dashboard-load-avail-serials.js') }}"></script>
+  <script src="{{ asset('js/dashboard-prop-filter.js') }}"></script>
+  <script src="{{ asset('js/dashboard-reference-quick.js') }}"></script>
+  <script src="{{ asset('js/dashboard-student-search.js') }}"></script>
+  <script src="{{ asset('js/dashboard-submit-form.js') }}"></script>
+  <script src="{{ asset('js/dashboard-maintenance-modal.js') }}"></script>
+
 </body>
 
 </html>

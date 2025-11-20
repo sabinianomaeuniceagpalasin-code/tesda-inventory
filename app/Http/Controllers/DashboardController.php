@@ -46,23 +46,29 @@ class DashboardController extends Controller
             ->get();
 
         $usageData = DB::table('tools')
-            ->select('tool_name', DB::raw('SUM(usage_count) as total_usage'))
+            ->select('tool_name')
             ->groupBy('tool_name')
-            ->orderBy('total_usage', 'DESC')
             ->get();
 
         // ---------- Maintenance Data ----------
         $maintenanceRecords = DB::table('maintenance_records')
-            ->join('tools', 'maintenance_records.tool_id', '=', 'tools.id')
-            ->select('maintenance_records.*', 'tools.tool_name')
-            ->orderBy('maintenance_records.maintenance_date', 'DESC')
+            ->select(
+                'property_no',
+                'item_name',
+                'issue_problem',
+                'date_reported',
+                'repair_cost',
+                'expected_completion',
+                'remarks',
+            )
+            ->orderBy('date_reported', 'DESC')
             ->get();
 
         $maintenanceCounts = [
             'total' => $maintenanceRecords->count(),
             'pending' => $maintenanceRecords->where('status', 'Pending')->count(),
             'completed' => $maintenanceRecords->where('status', 'Completed')->count(),
-            'upcoming' => $maintenanceRecords->where('next_schedule', '>', now())->count(),
+            'upcoming' => $maintenanceRecords->where('expected_completion', '>', now())->count(),
         ];
 
         // ---------- Return view ----------
@@ -76,8 +82,8 @@ class DashboardController extends Controller
             'inventory',
             'issuedForms',
             'formSummaryCounts',
-            'usageData',
             'issuedFrequency',
+            'usageData',             
             'maintenanceRecords',
             'maintenanceCounts'
         ));
