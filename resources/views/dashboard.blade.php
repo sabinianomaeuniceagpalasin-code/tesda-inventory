@@ -773,56 +773,53 @@
      MAINTENANCE ADD MODAL
 ================================ -->
   <div id="maintenanceAddModal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Add New Record</h3>
-        <button id="closeMaintenanceModal" class="close-btn">&times;</button>
-      </div>
+    <div class="modal-box">
 
-      <div class="modal-body">
-        <form id="maintenanceForm">
+      <button id="closeMaintenanceModal" class="modal-close">&times;</button>
 
+      <h2 class="modal-title">Add new record</h2>
+
+      <form id="maintenanceForm">
+
+        <!-- TOP 2-COLUMN FIELDS -->
+        <div class="two-columns">
           <div class="form-group">
-            <label for="maintenance_property_no">Property Number</label>
-            <input id="maintenance_property_no" name="property_no" readonly>
+            <label>Property No.*</label>
+            <input type="text" id="m_property_no" name="property_no" required readonly>
           </div>
 
           <div class="form-group">
-            <label for="maintenance_type">Tool</label>
+            <label>Item Name*</label>
+            <input type="text" id="m_item_name" name="item_name" required readonly>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label for="maintenance_details">Issue / Problem</label>
-            <textarea id="maintenance_details" name="details" rows="3" required></textarea>
-          </div>
+        <div class="form-group full">
+          <label>Issue / Problem*</label>
+          <input type="text" id="m_issue" name="issue" required>
+        </div>
 
-          <div class="form-group">
-            <label for="maintenance_date">Date Reported</label>
-            <input type="date" id="maintenance_date" name="date" required>
-          </div>
+        <div class="form-group full">
+          <label>Date Reported*</label>
+          <input type="date" id="m_date" name="date_reported" required>
+        </div>
 
-          <div class="form-group">
-            <label for="maintenance_date">Repair Cost</label>
-            <input type="date" id="maintenance_date" name="date" required>
-          </div>
+        <div class="form-group full">
+          <label>Repair Cost*</label>
+          <input type="number" id="m_cost" name="repair_cost" required>
+        </div>
 
-          <div class="form-group">
-            <label for="maintenance_date">Expected Completion</label>
-            <input type="date" id="maintenance_date" name="date" required>
-          </div>
+        <div class="form-group full">
+          <label>Expected Completion*</label>
+          <input type="date" id="m_completion" name="expected_completion" required>
+        </div>
 
-          <div class="form-group">
-            <label for="maintenance_date">Remarks/label>
-            <input type="date" id="maintenance_date" name="date" readonly>
-          </div>
+        <div class="modal-buttons">
+          <button type="button" class="cancel-btn">Cancel</button>
+          <button type="submit" class="add-btn">Add</button>
+        </div>
 
-          <button type="submit" class="submit-btn">
-            Save Record
-          </button>
-
-        </form>
-      </div>
-
+      </form>
     </div>
   </div>
 

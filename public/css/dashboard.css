@@ -1030,17 +1030,13 @@ td {
     background: #e3e6ef;
 }
 
-.add-btn {
-    background: #3b6ef5;
-    color: #fff;
-}
-
 /* TABLE */
 .form-table-container {
     background: #fff;
     border-radius: 15px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
+    margin-top: 30px;
 }
 
 .form-table {
@@ -1395,4 +1391,210 @@ td {
 #reports .form-table th {
     background: #f0f0f0;
     font-weight: 700;
+}
+
+/* ===============================
+   MODAL OVERLAY
+=============================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===============================
+   MODAL CONTENT
+=============================== */
+.modal-content {
+    background: #ffffff;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ===============================
+   MODAL HEADER
+=============================== */
+.modal-header {
+    background: #0c5e3c;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    color: #ffdddd;
+}
+
+/* ===============================
+   OVERLAY
+=============================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+/* ===============================
+   MODAL BOX (Figma style)
+=============================== */
+.modal-box {
+    background: white;
+    width: 480px;
+    border-radius: 18px;
+    padding: 35px 40px 30px;
+    position: relative;
+    border: 1px solid #d2d2d2;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+    font-family: "Inter", sans-serif;
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Modal Title */
+.modal-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0e3a70;
+    margin-bottom: 30px;
+}
+
+/* ===============================
+   FORM STYLING
+=============================== */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.two-columns {
+    display: flex;
+    gap: 36px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a2c4b;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    padding: 10px;
+    border: 1px solid #c5c5c5;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: #2762c2;
+    outline: none;
+}
+
+.full {
+    width: 100%;
+}
+
+/* ===============================
+   BUTTONS
+=============================== */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 12px;
+}
+
+.cancel-btn {
+    background: transparent;
+    color: #d9534f;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.add-btn {
+    background: #1f5595;
+    color: white;
+    border: none;
+    padding: 10px 28px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.add-btn:hover {
+    background: #153f75;
 }
