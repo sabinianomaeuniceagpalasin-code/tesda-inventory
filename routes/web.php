@@ -115,7 +115,7 @@ Route::get('/form-records', [IssuedLogController::class, 'indexForms'])->name('f
 // --------------------
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/analytics/predict/{toolId}', [AnalyticsController::class, 'predictTool']);
-Route::get('/analytics/recommend/{toolId}', [AnalyticsController::class, 'recommendTool']);
-Route::get('/analytics/anomaly/{toolId}', [AnalyticsController::class, 'anomalyCheck']);
-Route::get('/analytics/report/{toolId}', [AnalyticsController::class, 'fullReport']);
+// Route::get('/analytics/predict/{toolId}', [AnalyticsController::class, 'predictTool']);
+// Route::get('/analytics/recommend/{toolId}', [AnalyticsController::class, 'recommendTool']);
+// Route::get('/analytics/anomaly/{toolId}', [AnalyticsController::class, 'anomalyCheck']);
+// Route::get('/analytics/report/{toolId}', [AnalyticsController::class, 'fullReport']);

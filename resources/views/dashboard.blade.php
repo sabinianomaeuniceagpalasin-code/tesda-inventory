@@ -67,8 +67,8 @@
         <div id="dashboard" class="content-section active">
           <section class="quick-status">
             <div class="status-card">
-              <h2>{{ $totalTools }}</h2>
-              <p>Total Tools & Equipment</p>
+              <h2>{{ $totalItems }}</h2>
+              <p>Total Items & Equipment</p>
             </div>
             <div class="status-card">
               <h2>{{ $availableItems }}</h2>
@@ -103,12 +103,12 @@
               </div>
 
               <div class="table-box equal-box">
-                <h3>Tools Schedule for Repair</h3>
+                <h3>Items Schedule for Repair</h3>
                 <div class="table-wrapper">
                   <table>
                     <thead>
                       <tr>
-                        <th>Tool</th>
+                        <th>Item</th>
                         <th>Issue</th>
                         <th>Status</th>
                         <th>Date Schedule</th>
@@ -158,7 +158,7 @@
                     <thead>
                       <tr>
                         <th>Issued To</th>
-                        <th>Tool</th>
+                        <th>Item</th>
                         <th>Property No.</th>
                         <th>Item Type</th>
                         <th>Status</th>
@@ -207,8 +207,8 @@
         <div id="inventory" class="content-section">
           <div class="inventory-summary">
             <div class="summary-box">
-              <p>Total Tools & Equipment</p>
-              <h2>{{ $totalTools }}</h2>
+              <p>Total Items & Equipment</p>
+              <h2>{{ $totalItems }}</h2>
             </div>
             <div class="summary-box">
               <p>Available Items</p>
@@ -240,7 +240,7 @@
             <thead>
               <tr>
                 <th>Serial No.</th>
-                <th>Item Name</th>
+                <th>Item</th>
                 <th>Sources of Fund</th>
                 <th>Classification</th>
                 <th>Date Acquired</th>
@@ -252,7 +252,7 @@
               @foreach ($inventory as $item)
                 <tr>
                   <td>{{ $item->serial_no }}</td>
-                  <td>{{ $item->tool_name }}</td>
+                  <td>{{ $item->item_name }}</td>
                   <td>{{ $item->source_of_fund }}</td>
                   <td>{{ $item->classification }}</td>
                   <td>{{ \Carbon\Carbon::parse($item->date_acquired)->format('F d, Y') }}</td>
@@ -291,7 +291,7 @@
                 @csrf
                 <div class="form-grid">
                   <div><label>Property No.</label><input type="text" id="property_no" name="property_no" required></div>
-                  <div><label>Particular Article / Item Name</label><input type="text" id="tool_name" name="tool_name"
+                  <div><label>Particular Article / Item Name</label><input type="text" id="item_name" name="item_name"
                       required></div>
                   <div><label>Classification</label><input type="text" id="classification" name="classification"
                       required></div>
@@ -328,7 +328,7 @@
               <div class="analytics-overview">
                 <div class="analytic-card">
                   <h4>Total issued items</h4>
-                  <p>309</p>
+                  <p>{{ $totalIssuedItems }}</p>
                 </div>
                 <div class="analytic-card">
                   <h4>Active issuances</h4>
@@ -365,51 +365,21 @@
                       <th>Property #</th>
                       <th>Issued to</th>
                       <th>Issued by</th>
-                      <th>Date issued</th>
+                      <th>Date Issued</th>
                       <th>Item</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><input type="checkbox" /></td>
-                      <td>00001</td>
-                      <td>Luffy</td>
-                      <td>Doflamingo</td>
-                      <td>July 1, 2025</td>
-                      <td>Helmet</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" /></td>
-                      <td>00002</td>
-                      <td>Zoro</td>
-                      <td>Kaido</td>
-                      <td>July 2, 2025</td>
-                      <td>Safety Shoes</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" /></td>
-                      <td>00003</td>
-                      <td>Nami</td>
-                      <td>Linlin</td>
-                      <td>July 3, 2025</td>
-                      <td>Uniform</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" /></td>
-                      <td>00004</td>
-                      <td>Usopp</td>
-                      <td>Garp</td>
-                      <td>July 4, 2025</td>
-                      <td>Goggles</td>
-                    </tr>
-                    <tr>
-                      <td><input type="checkbox" /></td>
-                      <td>00005</td>
-                      <td>Sanji</td>
-                      <td>Dragon</td>
-                      <td>July 5, 2025</td>
-                      <td>Mask</td>
-                    </tr>
+                    @foreach($issuedItemsList as $item)
+                      <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>{{ $item->property_no }}</td>
+                        <td>{{ $item->issued_to }}</td>
+                        <td>{{ $item->issued_by }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->issued_date)->format('F d, Y') }}</td>
+                        <td>{{ $item->item }}</td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
@@ -568,38 +538,89 @@
           </div>
 
 
-          <div class="form-table-container">
-            <table class="form-table">
-              <thead>
+      <!-- Maintenance Records Table -->
+    <div class="form-table-container mt-4">
+        <h3>Maintenance Records</h3>
+        <table class="form-table">
+            <thead>
                 <tr>
-                  <th>Property #</th>
-                  <th>Tool</th>
-                  <th>Issue / Problem</th>
-                  <th>Date Reported</th>
-                  <th>Repair Cost</th>
-                  <th>Expected Completion</th>
-                  <th>Remarks</th>
+                    <th>Property #</th>
+                    <th>Item</th>
+                    <th>Issue / Problem</th>
+                    <th>Date Reported</th>
+                    <th>Repair Cost</th>
+                    <th>Expected Completion</th>
+                    <th>Remarks</th>
                 </tr>
-              </thead>
-
-              <tbody>
-                @isset($maintenanceRecords)
-                  @foreach($maintenanceRecords as $record)
+            </thead>
+            <tbody>
+                @if($maintenanceRecords && $maintenanceRecords->count())
+                    @foreach($maintenanceRecords as $record)
+                        <tr>
+                            <td>{{ $record->property_no ?? '-' }}</td>
+                            <td>{{ $record->item_name ?? '-' }}</td>
+                            <td>{{ $record->issue ?? '-' }}</td>
+                            <td>{{ $record->date_reported ? \Carbon\Carbon::parse($record->date_reported)->format('M d, Y') : '-' }}</td>
+                            <td>{{ $record->repair_cost ? '₱' . number_format($record->repair_cost, 2) : '-' }}</td>
+                            <td>{{ $record->expected_completion ? \Carbon\Carbon::parse($record->expected_completion)->format('M d, Y') : '-' }}</td>
+                            <td>{{ $record->remarks ?? '-' }}</td>
+                        </tr>
+                    @endforeach
+                @else
                     <tr>
-                      <td>{{ $record->property_no }}</td>
-                      <td>{{ $record->item_name }}</td>
-                      <td>{{ $record->issue_problem }}</td>
-                      <td>{{ $record->date_reported }}</td>
-                      <td>{{ $record->repair_cost ? '₱' . number_format($record->repair_cost, 2) : '-' }}</td>
-                      <td>{{ $record->expected_completion ?? '-' }}</td>
-                      <td>{{ $record->remarks }}</td>
+                        <td colspan="7" style="text-align:center;">No maintenance records found.</td>
                     </tr>
-                  @endforeach
-                @endisset
-              </tbody>
-            </table>
-          </div>
-        </div>
+                @endif
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Predictive / High-Risk Items Table -->
+    <div class="form-table-container mt-4">
+        <h3>Predictive / High-Risk Items</h3>
+        <table class="form-table">
+            <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Total Usage Hours</th>
+                <th>Threshold</th>
+                <th>Next Maintenance</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($highRiskItems as $item)
+                @php
+                    $threshold = $item->maintenance_threshold_usage;
+                    $nextDate = $item->next_maintenance_date ? \Carbon\Carbon::parse($item->next_maintenance_date)->format('M d, Y') : '-';
+
+                    if($threshold > 0 && $item->total_usage_hours >= $threshold) {
+                        $status = 'Over Usage';
+                        $color = 'orange';
+                    } elseif($item->next_maintenance_date && \Carbon\Carbon::parse($item->next_maintenance_date)->isPast()) {
+                        $status = 'Overdue';
+                        $color = 'red';
+                    } else {
+                        $status = 'OK';
+                        $color = 'green';
+                    }
+                @endphp
+                <tr>
+                    <td>{{ $item->item_name }}</td>
+                    <td>{{ $item->total_usage_hours }}</td>
+                    <td>{{ $threshold ?: '-' }}</td>
+                    <td>{{ $nextDate }}</td>
+                    <td><span style="color: {{ $color }}">{{ $status }}</span></td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" style="text-align:center;">No high-risk items</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+</div>
 
         <!-- ======================
             FORM RECORDS SECTION
@@ -637,8 +658,6 @@
           <div class="form-controls">
 
             <button class="sort-btn"><i class="fas fa-filter"></i> Sort by field</button>
-            <input type="text" id="formSearchInput" placeholder="Search student or reference number..."
-              style="padding:8px 12px; border:1px solid #ccc; border-radius:6px; width:300px; margin-left: 350px;">
             <button class="add-btn"><i class="fas fa-plus"></i> Add New Form</button>
           </div>
 
@@ -714,6 +733,7 @@
                     <label>Student Name</label>
                     <input type="text" id="studentSearch" name="student_name" autocomplete="off"
                       placeholder="Type student name..." required>
+
                     <div id="studentSuggestion" class="suggestion-box"></div>
                   </div>
 
@@ -724,8 +744,9 @@
 
                   <div class="full-width">
                     <label>Available Serial Numbers</label>
+                    <input type="hidden" id="serial_no" name="serial_no">
                     <div id="serialList" class="serial-container">
-                      <div class="placeholder">Type a Property No. to see available items.</div>
+                      <div class="placeholder">Type a Serial No. to see available items.</div>
                     </div>
                   </div>
 
@@ -894,9 +915,9 @@
   </script>
 
   <script>
-    window.usageLabels = @json($usageData->pluck('tool_name'));
+    window.usageLabels = @json($usageData->pluck('item_name'));
     window.usageValues = @json($usageData->pluck('total_usage'));
-    window.issuedLabels = @json($issuedFrequency->pluck('tool_name'));
+    window.issuedLabels = @json($issuedFrequency->pluck('item_name'));
     window.issuedValues = @json($issuedFrequency->pluck('total')).map(Number);
   </script>
 
